@@ -1,3 +1,4 @@
+import { BearsDisplay } from './components/BearsDisplay';
 import { BlackBears } from './components/BlackBears';
 import { PandaBears } from './components/PandaBears';
 import { PolarBears } from './components/PolarBears';
@@ -15,6 +16,8 @@ export const BearPage = () => {
         <PolarBears />
 
         <PandaBears />
+
+        <BearsDisplay />
       </div>
     </>
   );
