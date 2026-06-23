@@ -2,7 +2,6 @@ import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 // import { customSessionStorage } from '../storages/custom-session-storage.storage';
 import { firebaseStorage } from '../storages/firebase.storage.ts';
-import { logger } from '../middlewares/logger.middleware.ts';
 interface PersonState {
   firstName: string;
   lastName: string;
