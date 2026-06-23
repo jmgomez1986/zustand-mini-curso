@@ -14,8 +14,6 @@ export const JiraPage = () => {
     useShallow((state) => state.getTaskByStatus('done')),
   );
 
-  console.log({ allTasks, pendigTasks, inProgressTasks, doneTasks });
-
   return (
     <>
       <h1>Tareas</h1>
@@ -23,11 +21,15 @@ export const JiraPage = () => {
       <hr />
 
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-        <JiraTasks title='Pendientes' value='pending' />
+        <JiraTasks title='Pendientes' value='open' tasks={pendigTasks} />
 
-        <JiraTasks title='Avanzando' value='in-progress' />
+        <JiraTasks
+          title='Avanzando'
+          value='in-progress'
+          tasks={inProgressTasks}
+        />
 
-        <JiraTasks title='Terminadas' value='done' />
+        <JiraTasks title='Terminadas' value='done' tasks={doneTasks} />
       </div>
     </>
   );
