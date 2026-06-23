@@ -28,13 +28,11 @@ const storeApi: StateCreator<
 
 // Para usar las Redux DevTools  con zustand, se debe envolver en otro Middleware
 export const usePersonStore = create<PersonState & PersonActions>()(
-  logger(
-    devtools(
-      persist(storeApi, {
-        name: 'person-storage',
-        // storage: customSessionStorage,
-        storage: firebaseStorage,
-      }),
-    ),
+  devtools(
+    persist(storeApi, {
+      name: 'person-storage',
+      // storage: customSessionStorage,
+      storage: firebaseStorage,
+    }),
   ),
 );
