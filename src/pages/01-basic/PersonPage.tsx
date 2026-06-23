@@ -1,11 +1,11 @@
 import { WhiteCard } from '../../components';
-import { usePersonSore } from '../../stores';
+import { usePersonStore } from '../../stores';
 
 export const PersonPage = () => {
-  const firstName = usePersonSore((state) => state.firstName);
-  const lastName = usePersonSore((state) => state.lastName);
-  const setFirstName = usePersonSore((state) => state.setFirstName);
-  const setLastName = usePersonSore((state) => state.setLastName);
+  const firstName = usePersonStore((state) => state.firstName);
+  const lastName = usePersonStore((state) => state.lastName);
+  const setFirstName = usePersonStore((state) => state.setFirstName);
+  const setLastName = usePersonStore((state) => state.setLastName);
 
   return (
     <>

@@ -6,12 +6,12 @@ import {
   IoPawOutline,
 } from 'react-icons/io5';
 import { WhiteCard } from '../../components';
-import { useBearStore, usePersonSore } from '../../stores';
+import { useBearStore, usePersonStore } from '../../stores';
 
 export const Dashboard = () => {
   const totalBears = useBearStore((state) => state.totalBears);
-  const firstName = usePersonSore((state) => state.firstName);
-  const lastName = usePersonSore((state) => state.lastName);
+  const firstName = usePersonStore((state) => state.firstName);
+  const lastName = usePersonStore((state) => state.lastName);
 
   return (
     <>

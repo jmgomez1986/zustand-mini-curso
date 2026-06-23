@@ -26,7 +26,7 @@ const storeApi: StateCreator<
 });
 
 // Para usar las Redux DevTools  con zustand, se debe envolver en otro Middleware
-export const usePersonSore = create<PersonState & PersonActions>()(
+export const usePersonStore = create<PersonState & PersonActions>()(
   devtools(
     persist(storeApi, {
       name: 'person-storage',
