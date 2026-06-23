@@ -12,7 +12,7 @@ Este es un cascarón de proyecto, siéntete libre de usarlo para tus proyectos.
 
 ## Secciones del curso
 
-- Seccion 01 - Bases de Zustand
+- Seccion 02 - Bases de Zustand
   - Instalaciones
   - Configuraciones
   - Propiedades computadas
@@ -20,3 +20,12 @@ Este es un cascarón de proyecto, siéntete libre de usarlo para tus proyectos.
   - Actualizaciones de estado
   - Configuraciones con TypeScript
   - useShallow
+- Seccion 03 - Middlewares de Zustand
+  - Persist Middlewares
+  - createJSONStore
+  - Guardar automáticamente en session storage
+  - Guardar automáticamente en Firebase
+  - Crear un storage personalizado
+  - Diferentes interfaces de Zustand
+  - Custom Middleware
+  - Redux DevTools y acciones
