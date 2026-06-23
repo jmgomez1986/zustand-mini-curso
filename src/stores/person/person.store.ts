@@ -2,6 +2,7 @@ import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 // import { customSessionStorage } from '../storages/custom-session-storage.storage';
 import { firebaseStorage } from '../storages/firebase.storage.ts';
+import { logger } from '../middlewares/logger.middleware.ts';
 interface PersonState {
   firstName: string;
   lastName: string;
@@ -27,11 +28,13 @@ const storeApi: StateCreator<
 
 // Para usar las Redux DevTools  con zustand, se debe envolver en otro Middleware
 export const usePersonStore = create<PersonState & PersonActions>()(
-  devtools(
-    persist(storeApi, {
-      name: 'person-storage',
-      // storage: customSessionStorage,
-      storage: firebaseStorage,
-    }),
+  logger(
+    devtools(
+      persist(storeApi, {
+        name: 'person-storage',
+        // storage: customSessionStorage,
+        storage: firebaseStorage,
+      }),
+    ),
   ),
 );
