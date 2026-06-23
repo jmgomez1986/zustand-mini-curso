@@ -13,7 +13,7 @@ export const BearsDisplay = () => {
 
   return (
     <WhiteCard>
-      <h2>Bears Display</h2>
+      <h2>Osos</h2>
 
       <div className='flex flex-col gap-1.5'>
         <button onClick={doNothing}>Do Nothing</button>

@@ -13,6 +13,10 @@ interface BearState {
 
   bears: Bear[];
 
+  computed: {
+    totalBears: number;
+  };
+
   increseBackBears: (by: number) => void;
   incresePolarBears: (by: number) => void;
   incresePandaBears: (by: number) => void;
@@ -23,12 +27,23 @@ interface BearState {
 }
 
 // Create store using the curried form of `create`
-export const useBearStore = create<BearState>()((set) => ({
+export const useBearStore = create<BearState>()((set, get) => ({
   blackBears: 10,
   polarBears: 5,
   pandaBears: 1,
 
   bears: [],
+
+  computed: {
+    get totalBears(): number {
+      return (
+        get().blackBears +
+        get().polarBears +
+        get().pandaBears +
+        get().bears.length
+      );
+    },
+  },
 
   increseBackBears: (by) =>
     set((state) => ({ blackBears: state.blackBears + by })),
