@@ -16,6 +16,7 @@ const storageApi: StateStorage = {
     }
   },
   setItem: async function (name: string, value: string): Promise<void> {
+    // Tener en cuenta el 'bombardeo' a la DB
     const data = await fetch(`${firebaseUrl}/${name}.json`, {
       method: 'PUT',
       body: value,

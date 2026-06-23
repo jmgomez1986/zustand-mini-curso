@@ -1,5 +1,5 @@
 import { type StateCreator, create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 // import { customSessionStorage } from '../storages/custom-session-storage.storage';
 import { firebaseStorage } from '../storages/firebase.storage.ts';
 interface PersonState {
@@ -12,17 +12,26 @@ interface PersonActions {
   setLastName: (value: string) => void;
 }
 
-const storeApi: StateCreator<PersonState & PersonActions> = (set) => ({
+// Se agregan valores para poner en el redux devtools el nombre de la accion
+const storeApi: StateCreator<
+  PersonState & PersonActions,
+  [['zustand/devtools', never], ['zustand/persist', unknown]]
+> = (set) => ({
   firstName: '',
   lastName: '',
-  setFirstName: (value: string) => set({ firstName: value }),
-  setLastName: (value: string) => set({ lastName: value }),
+  setFirstName: (value: string) =>
+    set({ firstName: value }, false, 'setFirstName'),
+  setLastName: (value: string) =>
+    set({ lastName: value }, false, 'setLastName'),
 });
 
+// Para usar las Redux DevTools  con zustand, se debe envolver en otro Middleware
 export const usePersonSore = create<PersonState & PersonActions>()(
-  persist(storeApi, {
-    name: 'person-storage',
-    // storage: customSessionStorage,
-    storage: firebaseStorage,
-  }),
+  devtools(
+    persist(storeApi, {
+      name: 'person-storage',
+      // storage: customSessionStorage,
+      storage: firebaseStorage,
+    }),
+  ),
 );
