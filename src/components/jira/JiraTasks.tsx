@@ -1,7 +1,6 @@
 import {
   IoCheckmarkCircleOutline,
   IoEllipsisHorizontalOutline,
-  IoReorderTwoOutline,
 } from 'react-icons/io5';
 import { Task, TaskStatus } from '../../interfaces';
 import { SingleTask } from './components/single-task';
@@ -9,12 +8,32 @@ import { SingleTask } from './components/single-task';
 interface Props {
   title: string;
   tasks: Task[];
-  value: TaskStatus;
+  status: TaskStatus;
 }
 
-export const JiraTasks = ({ title, tasks }: Props) => {
+export const JiraTasks = ({ title, tasks, status }: Props) => {
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log('OnDragOver');
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log('OnDragLeave');
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log('OnDrop', status);
+  };
+
   return (
-    <div className='!text-black relative flex flex-col rounded-[20px]  bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]'>
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className='!text-black relative flex flex-col rounded-[20px]  bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]'
+    >
       {/* Task Header */}
       <div className='relative flex flex-row justify-between'>
         <div className='flex items-center justify-center'>
