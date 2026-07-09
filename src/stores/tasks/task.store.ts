@@ -1,17 +1,23 @@
 import { create, StateCreator } from 'zustand';
+import { devtools } from 'zustand/middleware';
 import type { Task, TaskStatus } from '../../interfaces';
 
 interface TaskState {
+  draggingTaskId?: string;
   tasks: Record<string, Task>;
 }
 
 interface TaskActions {
   getTaskByStatus: (status: TaskStatus) => Task[];
+
+  setDraggingTaskId: (taskId: string) => void;
+  removeDraggingTaskId: () => void;
 }
 
 type TaskStore = TaskState & TaskActions;
 
 const storeApi: StateCreator<TaskStore> = (set, get) => ({
+  draggingTaskId: undefined,
   tasks: {
     'ABC-1': { id: 'ABC-1', title: 'Task 1', status: 'open' },
     'ABC-2': { id: 'ABC-2', title: 'Task 2', status: 'in-progress' },
@@ -22,8 +28,16 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
     const tasks = get().tasks;
     return Object.values(tasks).filter((task) => task.status === status);
   },
+  setDraggingTaskId: (taskId: string) => {
+    set({ draggingTaskId: taskId });
+  },
+  removeDraggingTaskId: () => {
+    set({ draggingTaskId: undefined });
+  },
 });
 
-export const useTaskStore = create<TaskStore>()(storeApi);
 // Se consume como un hook y como las reglas de React dicen, cuando es un hook, debe comenzar con'use' y debe
 // ser llamado dentro de un componente funcional o dentro de otro hook.
+export const useTaskStore = create<TaskStore>()(
+  devtools(storeApi, { name: 'task-store' }),
+);
