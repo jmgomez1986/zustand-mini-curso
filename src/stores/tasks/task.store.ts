@@ -12,6 +12,7 @@ interface TaskActions {
 
   setDraggingTaskId: (taskId: string) => void;
   removeDraggingTaskId: () => void;
+  changeTaskStatus: (taskId: string, status: TaskStatus) => void;
 }
 
 type TaskStore = TaskState & TaskActions;
@@ -33,6 +34,17 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
   },
   removeDraggingTaskId: () => {
     set({ draggingTaskId: undefined });
+  },
+  changeTaskStatus: (taskId: string, status: TaskStatus) => {
+    const task = get().tasks[taskId];
+    task.status = status;
+
+    set((state) => ({
+      tasks: {
+        ...state.tasks,
+        [taskId]: task,
+      },
+    }));
   },
 });
 
