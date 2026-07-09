@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import classNames from 'classnames';
 import { IoAddOutline, IoCheckmarkCircleOutline } from 'react-icons/io5';
+import classNames from 'classnames';
+import Swal from 'sweetalert2';
 import { Task, TaskStatus } from '../../interfaces';
 import { SingleTask } from './components/single-task';
 import { useTaskStore } from '../../stores';
@@ -18,8 +19,22 @@ export const JiraTasks = ({ title, tasks, status }: Props) => {
 
   const [onDragOver, setOnDragOver] = useState(false);
 
-  const handleAddTask = () => {
-    addTask('Nuevo Tittulo', status);
+  const handleAddTask = async () => {
+    const { isConfirmed, value } = await Swal.fire({
+      title: 'Nueva tarea',
+      input: 'text',
+      inputLabel: 'Nombre de la tarea',
+      inputPlaceholder: 'Ingrese el nombre de la tarea',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'Debe ingresar un nombre para la tarea';
+        }
+      },
+    });
+
+    if (!isConfirmed) return;
+    addTask(value, status);
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
