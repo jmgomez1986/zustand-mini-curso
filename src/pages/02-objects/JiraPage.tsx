@@ -4,8 +4,20 @@ import { useTaskStore } from '../../stores';
 
 export const JiraPage = () => {
   const allTasks = useTaskStore(useShallow((state) => state.tasks));
+  const pendigTasks = useTaskStore(
+    useShallow((state) => state.getTaskByStatus('open')),
+  );
+  const inProgressTasks = useTaskStore(
+    useShallow((state) => state.getTaskByStatus('in-progress')),
+  );
+  const doneTasks = useTaskStore(
+    useShallow((state) => state.getTaskByStatus('done')),
+  );
 
-  console.log(allTasks);
+  console.log('All Tasks: ', allTasks);
+  console.log('Pending Tasks: ', pendigTasks);
+  console.log('In Progress Tasks: ', inProgressTasks);
+  console.log('Done Tasks: ', doneTasks);
 
   return (
     <>
