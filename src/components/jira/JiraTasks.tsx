@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import classNames from 'classnames';
 import {
   IoCheckmarkCircleOutline,
@@ -15,20 +16,21 @@ interface Props {
 
 export const JiraTasks = ({ title, tasks, status }: Props) => {
   const isDragging = useTaskStore((state) => !!state.draggingTaskId);
+  const [onDragOver, setOnDragOver] = useState(false);
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log('OnDragOver');
+    setOnDragOver(true);
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log('OnDragLeave');
+    setOnDragOver(false);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log('OnDrop', status);
+    setOnDragOver(false);
   };
 
   return (
@@ -40,6 +42,7 @@ export const JiraTasks = ({ title, tasks, status }: Props) => {
         '!text-black border-4  relative flex flex-col rounded-[20px]  bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]',
         {
           'border-blue-500 border-dotted': isDragging,
+          'border-green-500 border-dotted': isDragging && onDragOver,
         },
       )}
     >
