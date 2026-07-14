@@ -1,7 +1,7 @@
 import { create, StateCreator } from 'zustand';
 import { devtools } from 'zustand/middleware';
-
 import { v4 as uuidV4 } from 'uuid';
+import { produce } from 'immer';
 
 import type { Task, TaskStatus } from '../../interfaces';
 
@@ -40,12 +40,18 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
       title,
       status,
     };
-    set((state) => ({
-      tasks: {
-        ...state.tasks,
-        [newTask.id]: newTask,
-      },
-    }));
+    // set((state) => ({
+    //   tasks: {
+    //     ...state.tasks,
+    //     [newTask.id]: newTask,
+    //   },
+    // }));
+
+    set(
+      produce((state: TaskState) => {
+        state.tasks[newTask.id] = newTask;
+      }),
+    );
   },
 
   setDraggingTaskId: (taskId: string) => {
