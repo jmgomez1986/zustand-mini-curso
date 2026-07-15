@@ -1,7 +1,8 @@
 import { create, StateCreator } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 import { v4 as uuidV4 } from 'uuid';
-import { produce } from 'immer';
+// import { produce } from 'immer';
 
 import type { Task, TaskStatus } from '../../interfaces';
 
@@ -22,7 +23,10 @@ interface TaskActions {
 
 type TaskStore = TaskState & TaskActions;
 
-const storeApi: StateCreator<TaskStore> = (set, get) => ({
+const storeApi: StateCreator<
+  TaskStore,
+  [['zustand/devtools', never], ['zustand/immer', never]]
+> = (set, get) => ({
   draggingTaskId: undefined,
   tasks: {
     'ABC-1': { id: 'ABC-1', title: 'Task 1', status: 'open' },
@@ -40,6 +44,8 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
       title,
       status,
     };
+
+    //? Forma nativa de zustand
     // set((state) => ({
     //   tasks: {
     //     ...state.tasks,
@@ -47,13 +53,18 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
     //   },
     // }));
 
-    set(
-      produce((state: TaskState) => {
-        state.tasks[newTask.id] = newTask;
-      }),
-    );
-  },
+    //? Requiere npm i immer
+    // set(
+    //   produce((state: TaskState) => {
+    //     state.tasks[newTask.id] = newTask;
+    //   }),
+    // );
 
+    //? Con el uso del middlewaare de Zustand
+    set((state) => {
+      state.tasks[newTask.id] = newTask;
+    });
+  },
   setDraggingTaskId: (taskId: string) => {
     set({ draggingTaskId: taskId });
   },
@@ -61,15 +72,26 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
     set({ draggingTaskId: undefined });
   },
   changeTaskStatus: (taskId: string, status: TaskStatus) => {
-    const task = get().tasks[taskId];
-    task.status = status;
+    // const task = get().tasks[taskId];
+    // task.status = status;
 
-    set((state) => ({
-      tasks: {
-        ...state.tasks,
-        [taskId]: task,
-      },
-    }));
+    // set((state) => ({
+    //   tasks: {
+    //     ...state.tasks,
+    //     [taskId]: task,
+    //   },
+    // }));
+
+    //? Con el uso del middlewaare de Zustand
+    // set((state) => {
+    //   state.tasks[taskId] = { ...state.tasks[taskId], status };
+    // });
+
+    const task = { ...get().tasks[taskId] };
+    task.status = status;
+    set((state) => {
+      state.tasks[taskId] = task;
+    });
   },
   onTaskDrop: (status: TaskStatus) => {
     const taskId = get().draggingTaskId;
@@ -83,5 +105,5 @@ const storeApi: StateCreator<TaskStore> = (set, get) => ({
 // Se consume como un hook y como las reglas de React dicen, cuando es un hook, debe comenzar con'use' y debe
 // ser llamado dentro de un componente funcional o dentro de otro hook.
 export const useTaskStore = create<TaskStore>()(
-  devtools(storeApi, { name: 'task-store' }),
+  devtools(immer(storeApi), { name: 'task-store' }),
 );
