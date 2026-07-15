@@ -29,3 +29,12 @@ Este es un cascarón de proyecto, siéntete libre de usarlo para tus proyectos.
   - Diferentes interfaces de Zustand
   - Custom Middleware
   - Redux DevTools y acciones
+- Seccon 04 - Tareas - Drag & Drop - inmutabilidad con Immer
+  - Drag & Drop (sin dependencias)
+  - Uso de Store con objetos anidados
+  - Middlewares
+  - Funciones adicionales
+  - UUID
+  - Mutaciones vs Clonaciones
+  - Tipado en TypeScript
+  - Entre otras cosas
