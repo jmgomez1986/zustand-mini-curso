@@ -8,10 +8,16 @@ export interface PersonSlice {
   setLastName: (lastName: string) => void;
 }
 
-export const createPersonSlice: StateCreator<PersonSlice> = (set) => ({
+export const createPersonSlice: StateCreator<
+  PersonSlice,
+  [
+    ['zustand/devtools', never], // ← Aquí se declara devtools
+  ]
+> = (set) => ({
   firstName: '',
   lastName: '',
 
-  setFirstName: (firstName: string) => set({ firstName }),
-  setLastName: (lastName: string) => set({ lastName }),
+  setFirstName: (firstName: string) =>
+    set({ firstName }, false, 'setFirstName'),
+  setLastName: (lastName: string) => set({ lastName }, false, 'setLastName'),
 });
