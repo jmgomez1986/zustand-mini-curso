@@ -1,10 +1,11 @@
 import { create, StateCreator } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { v4 as uuidV4 } from 'uuid';
 // import { produce } from 'immer';
 
 import type { Task, TaskStatus } from '../../interfaces';
+import { customSessionStorage } from '../storages/custom-session-storage.storage';
 
 interface TaskState {
   draggingTaskId?: string;
@@ -19,13 +20,19 @@ interface TaskActions {
   removeDraggingTaskId: () => void;
   changeTaskStatus: (taskId: string, status: TaskStatus) => void;
   onTaskDrop: (status: TaskStatus) => void;
+
+  totalTasks: () => number;
 }
 
 type TaskStore = TaskState & TaskActions;
 
 const storeApi: StateCreator<
   TaskStore,
-  [['zustand/devtools', never], ['zustand/immer', never]]
+  [
+    ['zustand/devtools', never],
+    ['zustand/persist', unknown],
+    ['zustand/immer', never],
+  ]
 > = (set, get) => ({
   draggingTaskId: undefined,
   tasks: {
@@ -100,10 +107,20 @@ const storeApi: StateCreator<
     get().changeTaskStatus(taskId, status);
     get().removeDraggingTaskId();
   },
+  totalTasks(): number {
+    const tasks = get().tasks;
+    return Object.values(tasks).length;
+  },
 });
 
 // Se consume como un hook y como las reglas de React dicen, cuando es un hook, debe comenzar con'use' y debe
 // ser llamado dentro de un componente funcional o dentro de otro hook.
 export const useTaskStore = create<TaskStore>()(
-  devtools(immer(storeApi), { name: 'task-store' }),
+  devtools(
+    persist(immer(storeApi), {
+      name: 'task-storage',
+      storage: customSessionStorage,
+    }),
+    { name: 'task-store' },
+  ),
 );
