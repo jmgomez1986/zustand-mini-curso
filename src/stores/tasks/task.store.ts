@@ -68,15 +68,19 @@ const storeApi: StateCreator<
     // );
 
     //? Con el uso del middlewaare de Zustand
-    set((state) => {
-      state.tasks[newTask.id] = newTask;
-    });
+    set(
+      (state) => {
+        state.tasks[newTask.id] = newTask;
+      },
+      false,
+      'addTask',
+    );
   },
   setDraggingTaskId: (taskId: string) => {
-    set({ draggingTaskId: taskId });
+    set({ draggingTaskId: taskId }, false, 'setDraggingTaskId');
   },
   removeDraggingTaskId: () => {
-    set({ draggingTaskId: undefined });
+    set({ draggingTaskId: undefined }, false, 'removeDraggingTaskId');
   },
   changeTaskStatus: (taskId: string, status: TaskStatus) => {
     // const task = get().tasks[taskId];
@@ -96,9 +100,13 @@ const storeApi: StateCreator<
 
     const task = { ...get().tasks[taskId] };
     task.status = status;
-    set((state) => {
-      state.tasks[taskId] = task;
-    });
+    set(
+      (state) => {
+        state.tasks[taskId] = task;
+      },
+      false,
+      'changeTaskStatus',
+    );
   },
   onTaskDrop: (status: TaskStatus) => {
     const taskId = get().draggingTaskId;
