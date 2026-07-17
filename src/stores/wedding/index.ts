@@ -3,9 +3,13 @@ import { createPersonSlice, PersonSlice } from './person.slice';
 import { devtools } from 'zustand/middleware';
 import { createGuestSlice, GuestSlice } from './guest.slice';
 import { createDateSlice, DateSlice } from './date.slice';
+import {
+  ConfirmationSlice,
+  createConfirmationSlice,
+} from './confirmation.slice';
 
 //? Creaar el Store
-type ShareState = PersonSlice & GuestSlice & DateSlice;
+type ShareState = PersonSlice & GuestSlice & DateSlice & ConfirmationSlice;
 
 // ...a: une el set, get, storeApi en un solo arreglo de parámetros
 export const useWeddingBoundStore = create<ShareState>()(
@@ -14,6 +18,7 @@ export const useWeddingBoundStore = create<ShareState>()(
       ...createPersonSlice(...a),
       ...createGuestSlice(...a),
       ...createDateSlice(...a),
+      ...createConfirmationSlice(...a),
     }),
     { name: 'wedding-store' },
   ),
