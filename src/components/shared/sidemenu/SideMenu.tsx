@@ -7,7 +7,6 @@ import {
 	IoListOutline,
 	IoAccessibilityOutline,
 } from 'react-icons/io5';
-import { NavLink } from 'react-router-dom';
 import './SideMenu.css';
 import { SideMenuItem } from './SideMenuItem';
 import { useAuthStore } from '../../../stores';
@@ -54,6 +53,7 @@ const menuItems: MenuItem[] = [
 
 export const SideMenu = () => {
 	const logoutUser = useAuthStore((state) => state.logoutUser);
+	const userLoggued = useAuthStore((state) => state.user);
 
 	return (
 		<div
@@ -82,7 +82,9 @@ export const SideMenu = () => {
 							alt=''
 						/>
 					</span>
-					<span className='text-sm md:text-base font-bold'>Edward Tompson</span>
+					<span className='text-sm md:text-base font-bold'>
+						{userLoggued ? userLoggued.fullName : 'No user'}
+					</span>
 				</a>
 			</div>
 
